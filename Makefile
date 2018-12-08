@@ -1,6 +1,6 @@
 CC=g++
 CFLAGS=-std=c++11 -Wall -pedantic -O2
-OBJS=file_loader.o
+OBJS=file_loader.o reed_solomon.o
 
 all: bms2A bms2B
 

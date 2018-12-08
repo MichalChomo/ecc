@@ -1,7 +1,3 @@
-//
-// Created by michal on 3.12.2018.
-//
-
 #include <iostream>
 #include <fstream>
 #include "file_loader.h"

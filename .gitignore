@@ -1,6 +1,7 @@
 *.o                                                                             
-bms1A                                                                           
-bms1B                                                                           
+bms2A                                                                           
+bms2B                                                                           
 .idea                                                                           
 CMakeLists.txt                                                                  
 cmake-build-debug                                                               
+data*

@@ -1,7 +1,3 @@
-//
-// Created by michal on 3.12.2018.
-//
-
 #ifndef ECC_FILELOADER_H
 #define ECC_FILELOADER_H
 
