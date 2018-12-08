@@ -7,8 +7,8 @@
 
 class ReedSolomon : public ErrorCorrectionCode {
 
-    static const int BYTES_IN_CODEWORD = 65535;
-    static const int DATA_BYTES_IN_CODEWORD = 49151;
+    static const int BYTES_IN_CODEWORD = 255;
+    static const int DATA_BYTES_IN_CODEWORD = 149;
 
 public:
     int encodeFile(std::ifstream &inputFileStream, std::ofstream &outputFileStream) override;

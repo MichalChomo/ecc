@@ -3,77 +3,37 @@
 #include "ezpwd_rs.h"
 
 int ReedSolomon::encodeFile(std::ifstream &inputFileStream, std::ofstream &outputFileStream) {
-    std::vector<uint16_t> data;
-    char c;
-    uint16_t tmp;
+    std::vector<char> data;
+    int inputSize = getStreamSize(inputFileStream);
 
-    int i = 0;
-    for (; !inputFileStream.eof(); ++i) {
-        if (i == (DATA_BYTES_IN_CODEWORD - 1)) {
-            rs.encode(data);
-            for (size_t j = 0; j < data.size(); ++j) {
-                c = data.at(j) & 0xff;
-                outputFileStream.write(&c, 1);
-                c = data.at(j) >> 8;
-                outputFileStream.write(&c, 1);
-            }
-            data.clear();
-            i = 0;
-        }
-        inputFileStream.read(&c, 1);
-        tmp = static_cast<uint16_t>(c);
+    data.resize(DATA_BYTES_IN_CODEWORD);
+    while (!inputFileStream.eof()) {
+        inputFileStream.read(data.data(), DATA_BYTES_IN_CODEWORD);
         if (inputFileStream.eof()) {
-            rs.encode(data);
-            for (size_t j = 0; j < data.size(); ++j) {
-                c = data.at(j) & 0xff;
-                outputFileStream.write(&c, 1);
-                c = data.at(j) >> 8;
-                outputFileStream.write(&c, 1);
-            }
+            data.resize(inputSize % DATA_BYTES_IN_CODEWORD);
         }
-        inputFileStream.read(&c, 1);
-        tmp |= c << 8;
-        data.push_back(tmp);
+        rs.encode(data);
+        outputFileStream.write(data.data(), data.size());
+        data.resize(DATA_BYTES_IN_CODEWORD);
     }
-
 
     return RET_OK;
 }
 
 int ReedSolomon::decodeFile(std::ifstream &inputFileStream, std::ofstream &outputFileStream) {
-    std::vector<uint16_t> data;
-    char c;
-    uint16_t tmp;
+    std::vector<char> data;
+    int inputSize = getStreamSize(inputFileStream);
 
-    int i = 0;
-    for (; !inputFileStream.eof(); ++i) {
-        if (i == (BYTES_IN_CODEWORD - 1)) {
-            std::cout << rs.decode(data) << std::endl;
-            data.resize(data.size() - rs.nroots());
-            for (size_t j = 0; j < data.size(); ++j) {
-                c = data.at(j) & 0xff;
-                outputFileStream.write(&c, 1);
-                c = data.at(j) >> 8;
-                outputFileStream.write(&c, 1);
-            }
-            data.clear();
-            i = 0;
-        }
-        inputFileStream.read(&c, 1);
-        tmp = static_cast<uint16_t>(c);
+    data.resize(BYTES_IN_CODEWORD);
+    while (!inputFileStream.eof()) {
+        inputFileStream.read(data.data(), BYTES_IN_CODEWORD);
         if (inputFileStream.eof()) {
-            std::cout << rs.decode(data) << std::endl;
-            data.resize(data.size() - rs.nroots());
-            for (size_t j = 0; j < data.size(); ++j) {
-                c = data.at(j) & 0xff;
-                outputFileStream.write(&c, 1);
-                c = data.at(j) >> 8;
-                outputFileStream.write(&c, 1);
-            }
+            data.resize(inputSize % BYTES_IN_CODEWORD);
         }
-        inputFileStream.read(&c, 1);
-        tmp |= c << 8;
-        data.push_back(tmp);
+        rs.decode(data);
+        data.resize(data.size() - rs.nroots());
+        outputFileStream.write(data.data(), data.size());
+        data.resize(BYTES_IN_CODEWORD);
     }
 
     return RET_OK;
