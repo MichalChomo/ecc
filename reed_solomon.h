@@ -45,6 +45,10 @@ private:
      */
     int getStreamSize(std::ifstream &inputFileStream);
 
+    void interleave(std::vector<char> &data, std::vector<char> &interleavedData);
+
+    void deinterleave(std::vector<char> &interleavedData, std::vector<char> &data);
+
 };
 
 
