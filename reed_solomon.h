@@ -15,6 +15,9 @@ class ReedSolomon : public ErrorCorrectionCode {
     static const int BYTES_IN_CODEWORD = 255;
     static const int DATA_BYTES_IN_CODEWORD = 149;
 
+    static const int SYMBOL_INTERLEAVING_LENGTH = 64;
+    static const int BLOCK_INTERLEAVING_LENGTH = 4;
+
 public:
     /**
      * Encode the input stream with Reed-Solomon code = add parity bytes and output the result to the output stream.
