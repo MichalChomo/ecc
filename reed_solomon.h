@@ -15,8 +15,6 @@ class ReedSolomon : public ErrorCorrectionCode {
     static const int BYTES_IN_CODEWORD = 255;
     static const int DATA_BYTES_IN_CODEWORD = 149;
 
-    static const int SYMBOL_INTERLEAVING_LENGTH = 64;
-    static const int BLOCK_INTERLEAVING_LENGTH = 4;
 
 public:
     /**
@@ -46,11 +44,7 @@ private:
      * @param inputFileStream
      * @return Stream size in bytes.
      */
-    int getStreamSize(std::ifstream &inputFileStream);
-
-    void interleave(std::vector<char> &data, std::vector<char> &interleavedData);
-
-    void deinterleave(std::vector<char> &interleavedData, std::vector<char> &data);
+    size_t getStreamSize(std::ifstream &inputFileStream);
 
 };
 
